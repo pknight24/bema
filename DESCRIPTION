@@ -1,0 +1,14 @@
+Package: bema
+Title: Bulk Eigenvalue Matching Analysis
+Version: 0.0.1
+Authors@R: 
+    person(given = "Parker",
+           family = "Knight",
+           role = c("aut", "cre"),
+           email = "pknight@g.harvard.edu")
+Description: Estimates the number of spiked eigenvalues in a covariance matrix with bulk eigenvalue matching analysis.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
