@@ -1,4 +1,3 @@
-#' @importFrom MASS mvrnorm
 #' @export
 getQT1 <- function(n,p,theta,B)
 {
@@ -7,8 +6,11 @@ getQT1 <- function(n,p,theta,B)
 
   for (b in 1:B)
   {
-    Sigma <- diag(rgamma(n = p, shape = theta, rate = theta))
-    X <- mvrnorm(n = n, mu = rep(0,p), Sigma = Sigma)
+    ## this is Sigma^1/2
+    ## this approach should be faster than using mvrnorm
+    Sigma_half <- diag(sqrt(rgamma(n = p, shape = theta, rate = theta)))
+    X_raw <- matrix(rnorm(n * p), nrow = n, ncol = p)
+    X <- X_raw %*% Sigma_half
     # if (n < p) S <- 1 / n * tcrossprod(X) ## tcrossprod(X) = XX'
     # else S <- 1 / n * crossprod(X) ## crossprod(X) = X'X
     # eigen.S <- eigen(S)

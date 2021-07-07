@@ -34,8 +34,10 @@ step2 <- function(sample_eigenvalues, n, p, beta, step1_output, M = 500)
   sigma2 <- step1_output$sigma2_hat
 
   l1_distribution <- sapply(1:M, function(i){
-    Sigma <- sigma2 * diag(rgamma(p, shape = theta, rate = theta))
-    X <- mvrnorm(n = n, mu = rep(0,p), Sigma = Sigma)
+    Sigma_half <- diag(sqrt(sigma2 * rgamma(n = p, shape = theta, rate = theta)))
+    X_raw <- matrix(rnorm(n * p), nrow = n, ncol = p)
+    X <- X_raw %*% Sigma_half
+
     1/n * svd(X, nu=0, nv=0)$d[1]^2
   })
 
