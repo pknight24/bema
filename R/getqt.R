@@ -9,10 +9,11 @@ getQT1 <- function(n,p,theta,B)
   {
     Sigma <- diag(rgamma(n = p, shape = theta, rate = theta))
     X <- mvrnorm(n = n, mu = rep(0,p), Sigma = Sigma)
-    if (n < p) S <- 1 / n * tcrossprod(X) ## tcrossprod(X) = XX'
-    else S <- 1 / n * crossprod(X) ## crossprod(X) = X'X
-    eigen.S <- eigen(S)
-    output[,b] <- eigen.S$values
+    # if (n < p) S <- 1 / n * tcrossprod(X) ## tcrossprod(X) = XX'
+    # else S <- 1 / n * crossprod(X) ## crossprod(X) = X'X
+    # eigen.S <- eigen(S)
+    # output[,b] <- eigen.S$values
+    output[,b] <- 1/n * svd(X, nu = 0, nv = 0)$d^2 ## this avoids computing the eigenvectors
   }
   rowMeans(output)
 
