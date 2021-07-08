@@ -26,9 +26,10 @@ step1 <- function(sample_eigenvalues, n, p, alpha, theta_interval = c(0.1, 50), 
 
 }
 
-#' @importFrom MASS mvrnorm
+#' @importFrom irlba irlba
 #' @export
-step2 <- function(sample_eigenvalues, n, p, beta, step1_output, M = 500)
+step2 <- function(sample_eigenvalues, n, p, beta, step1_output, M = 500,
+                  use_irlba=TRUE)
 {
   theta <- step1_output$theta_hat
   sigma2 <- step1_output$sigma2_hat
@@ -38,7 +39,16 @@ step2 <- function(sample_eigenvalues, n, p, beta, step1_output, M = 500)
     X_raw <- matrix(rnorm(n * p), nrow = n, ncol = p)
     X <- X_raw %*% Sigma_half
 
+    if (use_irlba)
+    {
+      if (n < p)
+        1/n * irlba(X, nu=1, nv=0)$d^2
+      else
+        1/n * irlba(X, nu=0, nv=1)$d^2
+    }
+    else
     1/n * svd(X, nu=0, nv=0)$d[1]^2
+
   })
 
   quant <- quantile(l1_distribution, probs = 1 - beta)

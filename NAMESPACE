@@ -2,5 +2,6 @@
 
 export(getQT1)
 export(step1)
-importFrom(MASS,mvrnorm)
+export(step2)
+importFrom(irlba,irlba)
 importFrom(stats,optimize)
